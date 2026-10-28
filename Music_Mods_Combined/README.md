@@ -29,8 +29,8 @@ needs), then `Music_Mods_Combined.esp` **last**. In Vortex, set a "load after" r
 for the music mods if LOOT doesn't place it after them.
 
 ## Install
-Zip the folder `FOMOD/Music Mods Combined FOMOD/` (the folder itself, with `fomod/` and `Core/`
-inside) and install the zip through Vortex. The installer has one page. Then deploy, check the
+Zip the contents of `FOMOD/Music Mods Combined FOMOD/` (so `fomod/` and `Core/` sit at the top
+of the zip) and install the zip through Vortex. The installer has one page. Then deploy, check the
 load order, and disable the two Chapter II patches.
 
 ## What's here
