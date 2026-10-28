@@ -1,11 +1,5 @@
 # Track records (MUST) left out of every merged list. Format: <plugin>|<EditorID>  then a reason.
-# Lines starting with # are ignored.
+# Lines starting with # are ignored. Use this for tracks that point at music files which don't exist.
 #
-# The two Chapter II patches were made for Chapter II v3.5. Their tracks point at
-# music\Starlight.xwm and music\Touch The Sky.xwm, which Chapter II v4 renamed to
-# music\ChapterII_Starlight.xwm and music\ChapterII_TouchTheSky.xwm. Chapter II v4's own
-# ChapterII_Starlight / ChapterII_TouchtheSky tracks (same day/night conditions) are already in
-# every list these were added to, so these three would only point at missing files.
-MelOfCiv - Chapter II Patch.esp|MUSStarlightMoC
-Still - Chapter II Patch.esp|MUSStarlightStill
-Still - Chapter II Patch.esp|MUSTouchTheSky
+# Empty in v0.2.0. (v0.1.0 listed three tracks from the Chapter II v3.5 patches, which are no
+# longer read as inputs.)

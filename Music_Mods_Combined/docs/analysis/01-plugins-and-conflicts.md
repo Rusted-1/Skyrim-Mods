@@ -1,6 +1,7 @@
 # Music mods: what each plugin touches and where they collide
 
-Plugins examined (from the archives in my `Music_Overhaul\Music_Mods_Used` folder):
+Plugins examined (from the archives in my `Music_Overhaul\Music_Mods_Used` folder). The two
+Chapter II patches were kept for reference only and aren't part of my load order:
 
 | Plugin | Short | ESL flag | Masters | Music types edited | Track records |
 |---|---|---|---|---|---|

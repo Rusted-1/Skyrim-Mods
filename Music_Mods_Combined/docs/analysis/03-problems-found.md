@@ -15,7 +15,7 @@
 
    The patch puts them all back.
 
-3. **The two Chapter II patches are for v3.5 and are stale with v4.**
+3. **The two Chapter II patches (reference only, not installed) are for v3.5 and are stale with v4.**
    `MelOfCiv - Chapter II Patch.esp` and `Still - Chapter II Patch.esp` add three tracks
    (`MUSStarlightMoC`, `MUSStarlightStill`, `MUSTouchTheSky`) that play `music\Starlight.xwm` and
    `music\Touch The Sky.xwm`. Chapter II v4 ships those files as
@@ -25,6 +25,9 @@
    Still patch also omits `ChapterII_FarandBeyond` from `MUSExploreCoast`, most likely because the
    track was added after 3.5. All of their FormIDs still resolve in v4, so they don't crash; they
    are just partly out of date.
+   They also place three Chapter II tracks where v3.5 had them: `ChapterII_StoriesofOld` in
+   exploration, and `ChapterII_Winterhold` and `ChapterII_TheHeartlands` in towns. v4 swapped
+   those, so it puts Stories of Old in towns and the other two in exploration.
 
 4. **Null entry in a Nyghtfall palette.** Nyghtfall's `NYGeneralDayPalette` track lists
    `00000000` as one of its sub-tracks. That's inside Nyghtfall's own track record, which the

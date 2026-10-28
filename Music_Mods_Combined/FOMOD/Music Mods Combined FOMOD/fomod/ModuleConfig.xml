@@ -21,7 +21,7 @@ Needs ALL of these enabled, with this patch loading after them:
   NyghtfallMM_NonReplacer.esp
   Chapter II - Soundtrack mod by Dreyma Music.esp
 
-Replaces "MelOfCiv - Chapter II Patch.esp" and "Still - Chapter II Patch.esp". Those were made for Chapter II v3.5 and add three tracks that point at music files Chapter II v4 renamed. Disable both.
+Does not need "MelOfCiv - Chapter II Patch.esp" or "Still - Chapter II Patch.esp" (made for Chapter II v3.5).
 
 ESL-flagged, so it uses no plugin slot.</description>
               <files><folder source="Core" destination="" priority="0"/></files>

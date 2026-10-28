@@ -15,5 +15,3 @@ Celtic_Music_In_Skyrim_SE.esp
 Celtic_Music_In_Skyrim_SE_Dungeon.esp
 NyghtfallMM_NonReplacer.esp
 Chapter II - Soundtrack mod by Dreyma Music.esp
-MelOfCiv - Chapter II Patch.esp
-Still - Chapter II Patch.esp

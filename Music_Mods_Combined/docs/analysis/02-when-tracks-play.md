@@ -22,9 +22,9 @@ Condition function codes 149, 707, 359 and 310 are recorded by number; I haven't
 names yet. The parameters show they test a keyword, a location type and a worldspace.
 
 ## Things to consider for the in-depth phase
-- **Less silence.** With every mod's tracks in one list, silence entries fall from about 30% of
-  the vanilla exploration lists to about 13% (see `docs/patch/v1-design.md`). Music will play
-  almost constantly while exploring. Adding silence weight is one option to tune later.
+- **Silence.** With every mod's tracks in one list, silence entries are about 20–28% of the
+  exploration lists, against vanilla's 27–34% (see `docs/patch/v2-design.md`). Silence weight
+  can be tuned later if music feels too constant.
 - **Unconditioned tracks.** Celtic, Still, MoC and DMO tracks play at any hour. Giving some of
   them day/night windows would need new track records of my own that point at their music
   files, which is possible without copying any audio.

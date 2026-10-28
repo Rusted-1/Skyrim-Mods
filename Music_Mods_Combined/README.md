@@ -19,9 +19,8 @@ plugins, music or archives.
 | Nyghtfall (With Vanilla Music 2.0.1) | `NyghtfallMM_NonReplacer.esp` |
 | Chapter II v4 (ESL) | `Chapter II - Soundtrack mod by Dreyma Music.esp` |
 
-**Disable** `MelOfCiv - Chapter II Patch.esp` and `Still - Chapter II Patch.esp`. They were made
-for Chapter II v3.5, this patch covers what they did, and three of their tracks point at music
-files Chapter II v4 renamed.
+Not needed: `MelOfCiv - Chapter II Patch.esp` and `Still - Chapter II Patch.esp`. They were made
+for Chapter II v3.5, and this patch covers the same merges for v4.
 
 ## Load order
 The music mods in any order (Dawnguard Music Overhaul after Melodies of Civilization, which it
@@ -30,8 +29,8 @@ for the music mods if LOOT doesn't place it after them.
 
 ## Install
 Zip the contents of `FOMOD/Music Mods Combined FOMOD/` (so `fomod/` and `Core/` sit at the top
-of the zip) and install the zip through Vortex. The installer has one page. Then deploy, check the
-load order, and disable the two Chapter II patches.
+of the zip) and install the zip through Vortex. The installer has one page. Then deploy and check the
+load order.
 
 ## What's here
 | Folder | Contents |
@@ -39,23 +38,21 @@ load order, and disable the two Chapter II patches.
 | `FOMOD/Music Mods Combined FOMOD/` | The installer, unzipped: `fomod/` config and `Core/Music_Mods_Combined.esp` |
 | `tools/` | `build_combined.py` (builds the patch), `verify.py` (checks it), `esp.py` (plugin reader/writer), `load_order.txt`, `exclude_tracks.txt` |
 | `docs/analysis/` | What each mod touches, how tracks pick their time and place, problems found in the mods |
-| `docs/patch/` | v0.1.0 design and the generated merge report |
+| `docs/patch/` | Design per version (`v1-design.md`, `v2-design.md`) and the generated merge reports |
 
 ## Rebuilding
 Python 3, no extra packages. From inside `tools/`:
 
 ```
-python build_combined.py <folder> --out Music_Mods_Combined.esp --report ../docs/patch/v1-merge-report.md
+python build_combined.py <folder> --out Music_Mods_Combined.esp --report ../docs/patch/v2-merge-report.md
 python verify.py <folder> Music_Mods_Combined.esp
 ```
 
-`<folder>` must hold every plugin named in `load_order.txt`, including the two Chapter II patches
-(read as inputs only) and the game's `Skyrim.esm`, `Update.esm` and `Dawnguard.esm`. Without the
+`<folder>` must hold every plugin named in `load_order.txt`, including the game's `Skyrim.esm`, `Update.esm` and `Dawnguard.esm`. Without the
 game files the build still runs, but vanilla tracks a mod removed won't come back. To add or remove
 a music mod, edit `load_order.txt` and rebuild.
 
 ## Status
-v0.1.0. Built and verified at the file level: 47 music types, 1,439 track entries, all
+v0.2.0. Built and verified at the file level: 47 music types, 1,574 track entries, all
 references resolve, and no source track is lost. **Not yet tested in game.** Open items for the
-in-depth phase are listed at the end of `docs/analysis/02-when-tracks-play.md`: silence ratio,
-time windows for the unconditioned tracks, and combat variety.
+in-depth phase are listed at the end of `docs/analysis/02-when-tracks-play.md`: time windows for the unconditioned tracks, and combat variety.
