@@ -9,7 +9,7 @@
         <group name="Patch" type="SelectAll">
           <plugins order="Explicit">
             <plugin name="Music_Mods_Combined.esp">
-              <description>Merges every music mod's track lists into one patch, so no mod's music is silenced by another and the vanilla tracks stay in the rotation. Each mod's own rules about when its tracks play (time of day, Dawnguard eclipse, location, combat against dragons) are untouched.
+              <description>Merges every music mod's track lists into one patch, so no mod's music is silenced by another and the vanilla tracks stay in the rotation. Then weights them: Melodies of Civilization leads in towns and palaces, Around the Fire in taverns, Dawnguard Music Overhaul in Dawnguard areas, Nyghtfall in combat and at night (20:00-06:00), Chapter II / Celtic / Still share the wilderness by day, and vanilla stays at about 10%. Each mod's own rules about when its tracks play (time of day, Dawnguard eclipse, location, combat against dragons) are untouched.
 
 Needs ALL of these enabled, with this patch loading after them:
   Melodies of Civilization.esp

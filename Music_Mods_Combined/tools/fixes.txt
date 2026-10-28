@@ -1,0 +1,9 @@
+# Bug fixes applied to source tracks before they are copied into this patch.
+# Format: <plugin>|<EditorID>|or:<condition index>   sets the OR flag on that condition.
+# Only takes effect where the patch uses its own day/night copy of the track (wilderness,
+# dungeons and other places where Nyghtfall leads at night). The original plugin is not changed.
+#
+# Nyghtfall's "Choir" (NYExploreSpecialC, music\explore\Choir.wav) is meant for late night but its
+# conditions read "time >= 22 AND time <= 5", which is never true, so it never played. Nyghtfall's
+# other late-night tracks use "time >= 22 OR time <= 5".
+NyghtfallMM_NonReplacer.esp|NYExploreSpecialC|or:0

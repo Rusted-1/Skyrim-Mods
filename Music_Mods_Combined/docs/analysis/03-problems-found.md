@@ -29,7 +29,11 @@
    exploration, and `ChapterII_Winterhold` and `ChapterII_TheHeartlands` in towns. v4 swapped
    those, so it puts Stories of Old in towns and the other two in exploration.
 
-4. **Null entry in a Nyghtfall palette.** Nyghtfall's `NYGeneralDayPalette` track lists
+4. **Nyghtfall's "Choir" never plays.** `NYExploreSpecialC` (`music\explore\Choir.wav`) has the
+   conditions `time >= 22 AND time <= 5`, which can't both be true. Nyghtfall's other late-night
+   tracks use OR. Fixed in v0.4.0's night copies (`tools/fixes.txt`).
+
+5. **Null entry in a Nyghtfall palette.** Nyghtfall's `NYGeneralDayPalette` track lists
    `00000000` as one of its sub-tracks. That's inside Nyghtfall's own track record, which the
    patch doesn't edit. It's probably harmless (the engine skips it), but if a day palette ever
    cuts out early, this is the first suspect.

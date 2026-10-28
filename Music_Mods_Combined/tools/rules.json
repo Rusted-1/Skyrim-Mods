@@ -1,0 +1,65 @@
+{
+  "_about": "Music share rules used by build_combined.py (see docs/patch/v4-design.md). Shares are fractions of the MUSIC picks in a music type; pauses keep their own share.",
+  "night": [
+    20,
+    6
+  ],
+  "shares": {
+    "lead": 0.75,
+    "vanilla": 0.1,
+    "nyghtfall_minor": 0.05
+  },
+  "max_entries": 2500,
+  "groups": {
+    "skyrim.esm": "Vanilla",
+    "update.esm": "Vanilla",
+    "dawnguard.esm": "Vanilla",
+    "nyghtfallmm_nonreplacer.esp": "Nyghtfall",
+    "chapter ii - soundtrack mod by dreyma music.esp": "Chapter II",
+    "celtic_music_in_skyrim_se.esp": "Celtic Music",
+    "celtic_music_in_skyrim_se_dungeon.esp": "Celtic Music",
+    "still.esp": "Still",
+    "melodies of civilization.esp": "Melodies of Civilization",
+    "dawnguard music overhaul.esp": "Dawnguard Music Overhaul",
+    "dawnguard music overhaul - combat.esp": "Dawnguard Music Overhaul",
+    "around the fire.esp": "Around the Fire"
+  },
+  "classes": {
+    "town": {
+      "lead": "Melodies of Civilization",
+      "types": [
+        "MUSTownTest",
+        "MUSCastle"
+      ]
+    },
+    "tavern": {
+      "lead": "Around the Fire",
+      "types": [
+        "MUSTavern",
+        "MUSTavernB"
+      ]
+    },
+    "dawnguard": {
+      "lead": "Dawnguard Music Overhaul",
+      "types": [
+        "MUSExploreDLCSoulCairn",
+        "MUSExploreDLCFalmerValley",
+        "MUSDungeonDLCVampireCastle",
+        "MUSCombatBossDLC1"
+      ]
+    },
+    "combat": {
+      "lead": "Nyghtfall",
+      "types": [
+        "MUSCombat",
+        "MUSCombatBoss",
+        "MUSCombatCivilWar",
+        "MUSCombatBossUmbra",
+        "MUSCombatBossChargen"
+      ]
+    },
+    "default": {
+      "night_lead": "Nyghtfall"
+    }
+  }
+}

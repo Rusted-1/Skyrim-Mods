@@ -22,6 +22,8 @@ Condition function codes 149, 707, 359 and 310 are recorded by number; I haven't
 names yet. The parameters show they test a keyword, a location type and a worldspace.
 
 ## Things to consider for the in-depth phase
+(v0.4.0 addressed the share balance: see `docs/patch/v4-design.md`. The points below are kept for history.)
+
 - **Silence.** With every mod's tracks in one list, silence entries are about 20–28% of the
   exploration lists, against vanilla's 27–34% (see `docs/patch/v2-design.md`). Silence weight
   can be tuned later if music feels too constant.
