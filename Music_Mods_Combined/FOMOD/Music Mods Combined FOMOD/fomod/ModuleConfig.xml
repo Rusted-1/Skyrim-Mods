@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="http://qconsulting.ca/fo3/ModConfig5.0.xsd">
+  <moduleName>Music Mods Combined</moduleName>
+
+  <installSteps order="Explicit">
+    <installStep name="Music Mods Combined">
+      <optionalFileGroups order="Explicit">
+        <group name="Patch" type="SelectAll">
+          <plugins order="Explicit">
+            <plugin name="Music_Mods_Combined.esp">
+              <description>Merges every music mod's track lists into one patch, so no mod's music is silenced by another and the vanilla tracks stay in the rotation. Each mod's own rules about when its tracks play (time of day, Dawnguard eclipse, location, combat against dragons) are untouched.
+
+Needs ALL of these enabled, with this patch loading after them:
+  Melodies of Civilization.esp
+  Dawnguard Music Overhaul.esp
+  Dawnguard Music Overhaul - Combat.esp
+  Still.esp
+  Celtic_Music_In_Skyrim_SE.esp
+  Celtic_Music_In_Skyrim_SE_Dungeon.esp
+  NyghtfallMM_NonReplacer.esp
+  Chapter II - Soundtrack mod by Dreyma Music.esp
+
+Replaces "MelOfCiv - Chapter II Patch.esp" and "Still - Chapter II Patch.esp". Those were made for Chapter II v3.5 and add three tracks that point at music files Chapter II v4 renamed. Disable both.
+
+ESL-flagged, so it uses no plugin slot.</description>
+              <files><folder source="Core" destination="" priority="0"/></files>
+              <typeDescriptor><type name="Required"/></typeDescriptor>
+            </plugin>
+          </plugins>
+        </group>
+      </optionalFileGroups>
+    </installStep>
+  </installSteps>
+</config>
