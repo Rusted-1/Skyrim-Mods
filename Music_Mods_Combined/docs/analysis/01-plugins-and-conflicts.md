@@ -11,6 +11,7 @@ Chapter II patches were kept for reference only and aren't part of my load order
 | `Still.esp` (ESP version) | Still | no | Dawnguard.esm, Skyrim.esm | 11 | 6 |
 | `Celtic_Music_In_Skyrim_SE.esp` (2.1) | Celtic | no | Skyrim.esm, Update.esm | 13 | 69 |
 | `Celtic_Music_In_Skyrim_SE_Dungeon.esp` | Celtic-D | no | Skyrim.esm, Update.esm | 4 | 8 |
+| `Around the Fire.esp` (1.0, added in v0.3.0) | ATF | yes | Skyrim.esm | 2 | 5 |
 | `NyghtfallMM_NonReplacer.esp` (With Vanilla Music 2.0.1) | Nyght | yes | Skyrim.esm, Update.esm, Dawnguard.esm | 44 | 189 |
 | `Chapter II - Soundtrack mod by Dreyma Music.esp` (v4 ESL) | ChII | yes | Skyrim.esm, Update.esm, Dawnguard.esm | 14 | 197 |
 | `MelOfCiv - Chapter II Patch.esp` (for ChII 3.5) | MoC×ChII | yes | Skyrim.esm, Dawnguard.esm, ChII, MoC | 1 | 1 |

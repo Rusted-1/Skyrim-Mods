@@ -16,6 +16,7 @@ plugins, music or archives.
 | Dawnguard Music Overhaul (Main + Combat modules) | `Dawnguard Music Overhaul.esp`, `Dawnguard Music Overhaul - Combat.esp` |
 | Still (ESP version) | `Still.esp` |
 | Celtic Music in Skyrim SE 2.1 + Dungeon add-on | `Celtic_Music_In_Skyrim_SE.esp`, `Celtic_Music_In_Skyrim_SE_Dungeon.esp` |
+| Around the Fire 1.0 (taverns) | `Around the Fire.esp` |
 | Nyghtfall (With Vanilla Music 2.0.1) | `NyghtfallMM_NonReplacer.esp` |
 | Chapter II v4 (ESL) | `Chapter II - Soundtrack mod by Dreyma Music.esp` |
 
@@ -38,13 +39,13 @@ load order.
 | `FOMOD/Music Mods Combined FOMOD/` | The installer, unzipped: `fomod/` config and `Core/Music_Mods_Combined.esp` |
 | `tools/` | `build_combined.py` (builds the patch), `verify.py` (checks it), `esp.py` (plugin reader/writer), `load_order.txt`, `exclude_tracks.txt` |
 | `docs/analysis/` | What each mod touches, how tracks pick their time and place, problems found in the mods |
-| `docs/patch/` | Design per version (`v1-design.md`, `v2-design.md`) and the generated merge reports |
+| `docs/patch/` | Design per version (`v1-design.md` to `v3-design.md`) and the generated merge reports |
 
 ## Rebuilding
 Python 3, no extra packages. From inside `tools/`:
 
 ```
-python build_combined.py <folder> --out Music_Mods_Combined.esp --report ../docs/patch/v2-merge-report.md
+python build_combined.py <folder> --out Music_Mods_Combined.esp --report ../docs/patch/v3-merge-report.md
 python verify.py <folder> Music_Mods_Combined.esp
 ```
 
@@ -53,6 +54,6 @@ game files the build still runs, but vanilla tracks a mod removed won't come bac
 a music mod, edit `load_order.txt` and rebuild.
 
 ## Status
-v0.2.0. Built and verified at the file level: 47 music types, 1,574 track entries, all
+v0.3.0. Built and verified at the file level: 47 music types, 1,579 track entries, all
 references resolve, and no source track is lost. **Not yet tested in game.** Open items for the
 in-depth phase are listed at the end of `docs/analysis/02-when-tracks-play.md`: time windows for the unconditioned tracks, and combat variety.
