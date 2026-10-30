@@ -1,14 +1,15 @@
-"""Rule-based weighting for Music Mods Combined (v0.4.0+).
+"""Rule-based weighting for Music Mods Combined (v0.4.0+; clock periods and pause share from v0.6.0).
 
 The game picks a track from a music type's list at random, so a track listed n times is n times as
 likely. This module turns the merged (unweighted) track set of each music type into a weighted
 list that hits the shares in rules.json, hour by hour.
 
-Shares can differ between day and night (Nyghtfall leads at night and is rare by day), which a
-fixed list can't express. For the groups whose share changes with the time of day, each track is
-replaced by two copies made by build_combined.py: a day copy and a night copy. Each copy is a new
-track record in Music_Mods_Combined.esp that plays the same music file with the same conditions
-plus a time-of-day check. The day copies and night copies then get separate weights.
+Shares can differ by time of day (Nyghtfall leads at night and is rare by day), and the number of
+tracks allowed to play changes through the day (tracks have their own hours). A fixed list can't
+express either. So for each group that needs it, every track is replaced by one copy per clock
+period (rules.json "periods", e.g. 20-22, 22-06, 06-08, 08-18, 18-20), made by build_combined.py.
+Each copy is a new track record in Music_Mods_Combined.esp that plays the same music file with the
+same conditions plus a time check for its period, and each period's copies get their own weight.
 
 Shares are computed per half-hour slot over the 24 h clock from each track's own time conditions
 (GetCurrentTime). Other conditions (place, dragon, eclipse) are treated as met.
@@ -24,7 +25,16 @@ def load_rules(path):
     r['type_class'] = {t: c for c, v in r['classes'].items() for t in v.get('types', [])}
     a, b = r['night']
     r['night_slots'] = {s for s in range(SLOTS) if (s / 2 >= a or s / 2 < b)}
+    r['period_names'] = [p[0] for p in r['periods']]
+    r['period_window'] = {p[0]: (p[1], p[2]) for p in r['periods']}
+    covered = [s for p in r['periods'] for s in range(SLOTS) if _in(s / 2, p[1], p[2])]
+    if sorted(covered) != list(range(SLOTS)):
+        raise SystemExit('rules.json: "periods" must cover the 24 h clock exactly once')
     return r
+
+
+def _in(h, a, b):
+    return a <= h < b if a < b else (h >= a or h < b)
 
 
 def _cmp(a, op, b):
@@ -53,20 +63,20 @@ def mask(conds):
     return tuple(_eval(conds, s / 2) for s in range(SLOTS))
 
 
-def gate_ctda(period, night):
+def gate_ctda(period, rules):
     """Conditions placed FIRST on a copy (so a trailing OR in the original can't join them)."""
-    a, b = night
+    a, b = rules['period_window'][period]
 
     def c(op, val, orf=False):
         return bytes([(OPS.index(op) << 5) | (1 if orf else 0), 0, 0, 0]) + struct.pack('<fHHIIIIi', val, 18, 0, 0, 0, 0, 0, -1)
-    if period == 'N':
+    if a > b:                       # wraps past midnight
         return [c('>=', a, True), c('<', b)]
-    return [c('>=', b), c('<', a)]
+    return [c('>=', a), c('<', b)]
 
 
 def gate_mask(period, rules):
-    ns = rules['night_slots']
-    return tuple((s in ns) == (period == 'N') for s in range(SLOTS))
+    a, b = rules['period_window'][period]
+    return tuple(_in(s / 2, a, b) for s in range(SLOTS))
 
 
 def targets(cls, present, night, rules):
@@ -83,6 +93,8 @@ def targets(cls, present, night, rules):
     vanilla_peer = cls in rules.get('vanilla_peer_classes', [])
     if V in present and not vanilla_peer:
         t[V] = sh['vanilla']
+    if 'Vanilla' in present and V != 'Vanilla':
+        t['Vanilla'] = sh.get('vanilla_leftover', 0.0)
     if 'Nyghtfall' in present and lead != 'Nyghtfall':
         t['Nyghtfall'] = sh['nyghtfall_minor']
     if lead:
@@ -96,6 +108,8 @@ def targets(cls, present, night, rules):
         t[lead] += rest
     elif V in t:
         t[V] += rest
+    elif 'Vanilla' in t:
+        t['Vanilla'] += rest
     elif t:
         k = next(iter(t)); t[k] += rest
     z = sum(t.values()) or 1
@@ -105,25 +119,23 @@ def targets(cls, present, night, rules):
 def weigh(type_edid, entries, info, pause_share, rules):
     """entries: unique track keys in the merged list.
     info[key] = dict(group=..., silence=bool, mask=tuple)
-    Returns (list of (entry, count), report) where entry is a key or (key, 'D'|'N') for a gated copy."""
+    Returns (list of (entry, count), report) where entry is a key or (key, period) for a gated copy."""
     cls = rules['type_class'].get(type_edid, 'default')
-    # Gate (split into day and night copies) every group whose share must change with the clock:
-    # Nyghtfall, vanilla and pauses where Nyghtfall leads at night, plus any group whose number of
-    # eligible tracks differs between day and night (e.g. Chapter II's day/night palettes).
-    gated_groups = {'Nyghtfall', rules.get('vanilla_group', 'Vanilla'), '_pause'} if cls == 'default' else set()
-    ns = rules['night_slots']
+    # Gate (split into one copy per clock period) every group whose share must change with the clock
+    # (Nyghtfall, LORKHAN/vanilla and pauses where Nyghtfall leads at night) and every group whose
+    # number of eligible tracks changes during the day (e.g. Chapter II's 08:00-18:00 tracks).
+    gated_groups = {'Nyghtfall', rules.get('vanilla_group', 'Vanilla'), 'Vanilla', '_pause'} if cls == 'default' else set()
     for g in {('_pause' if info[k]['silence'] else info[k]['group']) for k in entries}:
         ks = [k for k in entries if ('_pause' if info[k]['silence'] else info[k]['group']) == g]
         cnt = [sum(1 for k in ks if info[k]['mask'][s]) for s in range(SLOTS)]
-        if len({cnt[s] for s in ns}) > 1 or len({cnt[s] for s in range(SLOTS) if s not in ns}) > 1 \
-                or {cnt[s] for s in ns} != {cnt[s] for s in range(SLOTS) if s not in ns}:
+        if len(set(cnt)) > 1:
             gated_groups.add(g)
     # Units: entry -> (unit group, mask)
     units = []
     for k in entries:
         g = '_pause' if info[k]['silence'] else info[k]['group']
         if g in gated_groups:
-            for p in ('D', 'N'):
+            for p in rules['period_names']:
                 m = tuple(a and b for a, b in zip(info[k]['mask'], gate_mask(p, rules)))
                 if any(m):
                     units.append(((k, p), g + ':' + p, m))
@@ -158,17 +170,20 @@ def weigh(type_edid, entries, info, pause_share, rules):
     pos = [w[wg] for wg in wgroups if w[wg] > 0]
     lo = 1 / min(pos) if pos else 1
     per = {wg: sum(1 for u in units if u[1] == wg) for wg in wgroups}
+    smallest = None
     for i in range(1, 400):
-        k = lo * (0.5 + i * 0.05)
+        k = lo * (0.02 + i * 0.02) if i < 50 else lo * (0.5 + i * 0.05)
         cnt = {wg: (max(1, round(w[wg] * k)) if w[wg] > 0 else 0) for wg in wgroups}
         total = sum(cnt[wg] * per[wg] for wg in wgroups)
-        if total > rules['max_entries'] and best:
-            break
+        if smallest is None or total < smallest[2]:
+            smallest = (None, cnt, total, share_error(cnt, n, T, wgroups, base))
+        if total > rules['max_entries']:
+            continue                    # hard cap on list length
         err = share_error(cnt, n, T, wgroups, base)
         score = err + total * 3e-6          # prefer shorter lists when the error is about the same
         if best is None or score < best[0] - 1e-9:
             best = (score, cnt, total, err)
-    _, cnt, total, err = best
+    _, cnt, total, err = best or smallest
     out = [(u[0], cnt[u[1]]) for u in units if cnt[u[1]] > 0]
     dropped = [u[0] for u in units if cnt[u[1]] == 0]
     rep = dict(cls=cls, err=err, night_slots=rules['night_slots'], total=total, weights={wg: cnt[wg] for wg in wgroups},

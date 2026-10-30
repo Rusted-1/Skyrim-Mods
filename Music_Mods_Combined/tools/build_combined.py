@@ -27,7 +27,7 @@ How each music type (MUSC) is merged
 Track records (MUST) are never copied or edited, so each mod's own conditions (time of day,
 eclipse, location, combat target) keep working exactly as their authors set them up.
 """
-import argparse, collections, os, struct, sys
+import argparse, collections, os, re, struct, sys
 from esp import read_plugin, write_grup, write_subs, Rec, Sub, zstr
 import weighting
 
@@ -96,6 +96,32 @@ def apply_fixes(fixes, plugins):
             c = bytearray(conds[int(i)].data); c[0] |= 1; conds[int(i)].data = bytes(c)
         else:
             sys.exit(f'fixes.txt: unknown action {action}')
+
+
+def replacer_groups(rules, must, here):
+    """Map track keys to a replacer group (e.g. LORKHAN) when a replacer mod swaps out their music.
+    A track counts when its file (ignoring .wav/.xwm) is in the replacer's list; a palette counts when
+    at least half of its parts do."""
+    out = {}
+    stem = lambda a: re.sub(r'\.(wav|xwm)$', '', re.sub(r'^/?data/', '', a.lower().replace('\\', '/')))
+    for group, listfile in (rules.get('replacers') or {}).items():
+        files = {stem(l.strip()) for l in open(os.path.join(here, listfile), encoding='utf-8') if l.strip()}
+        for k, (p, r) in must.items():
+            a = (r.get('ANAM') or b'').rstrip(b'\0').decode('cp1252')
+            if a and stem(a) in files and 'SILENT' not in r.edid.upper():
+                out[k] = group
+        for k, (p, r) in must.items():
+            sn = r.get('SNAM') or b''
+            if sn and k not in out:
+                kids = [p.key(x) for x in struct.unpack(f'<{len(sn) // 4}I', sn)]
+                if kids and sum(1 for c in kids if out.get(c) == group) * 2 >= len(kids):
+                    out[k] = group
+    return out
+
+
+def silence_seconds(r):
+    f = r.get('FLTV')
+    return struct.unpack('<f', f)[0] if f else 0.0
 
 
 def find(folder, name):
@@ -181,6 +207,7 @@ def main():
             versions[k].append((p, r))
 
     rules = weighting.load_rules(a.rules) if a.rules and a.rules.lower() != 'none' else None
+    repl = replacer_groups(rules, must, os.path.dirname(os.path.abspath(a.rules))) if rules else {}
     wreports = {}
     out_recs, report = [], []
     used_files = set()
@@ -233,9 +260,17 @@ def main():
             info = {}
             for t in uniq:
                 p_, r_ = must[t]
-                info[t] = dict(group=rules['groups'].get(t[0], t[0]), silence='SILENT' in r_.edid.upper(),
+                info[t] = dict(group=repl.get(t, rules['groups'].get(t[0], t[0])), silence='SILENT' in r_.edid.upper(),
                                mask=weighting.mask(r_.all('CTDA')))
             pause = sum(1 for t in merged if info[t]['silence']) / len(merged)
+            pr = rules.get('pause')
+            if pr and any(info[t]['silence'] for t in uniq):
+                # Every pause becomes one short silence that's allowed at all hours (rules.json "pause")
+                pause = pr['share']
+                pk = next(k for k, (p_, r_) in must.items() if r_.edid == pr['track'])
+                uniq = [t for t in uniq if not info[t]['silence']] + [pk]
+                info[pk] = dict(group='_pause', silence=True, mask=weighting.mask(must[pk][1].all('CTDA')))
+                used_files.add(pk[0])
             weighted, wrep = weighting.weigh(winner.edid, uniq, info, pause, rules)
             wreports[winner.edid] = wrep
             merged = []
@@ -302,7 +337,7 @@ def main():
     for (src, period), oid in sorted(copies.items(), key=lambda kv: kv[1]):
         p, r = must[src]
         g = lambda x: fid(p.key(x))
-        conds = [Sub('CTDA', c) for c in weighting.gate_ctda(period, rules['night'])]
+        conds = [Sub('CTDA', c) for c in weighting.gate_ctda(period, rules)]
         for c in r.all('CTDA'):
             c = bytearray(c)
             fn = struct.unpack_from('<H', c, 8)[0]

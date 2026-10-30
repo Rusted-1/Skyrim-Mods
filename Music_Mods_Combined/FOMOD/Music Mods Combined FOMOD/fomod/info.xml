@@ -2,7 +2,7 @@
 <fomod>
   <Name>Music Mods Combined</Name>
   <Author>Rusted-1</Author>
-  <Version MachineVersion="0.5.0">0.5.0</Version>
+  <Version MachineVersion="0.6.0">0.6.0</Version>
   <Description>One light (ESL-flagged) patch that merges the track lists of Nyghtfall, Chapter II, Celtic Music in Skyrim, Still, Melodies of Civilization, Around the Fire and the Dawnguard Music Overhaul, so all of them play together with the vanilla soundtrack, weighted by place and time of day.</Description>
   <Groups><element>Audio</element><element>Patches</element></Groups>
 </fomod>

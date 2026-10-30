@@ -1,25 +1,64 @@
 {
-  "_about": "Music share rules used by build_combined.py (see docs/patch/v4-design.md and v5-design.md). Shares are fractions of the MUSIC picks in a music type; pauses keep their own share.",
+  "_about": "Music share rules used by build_combined.py (see docs/patch/v4-design.md to v6-design.md). Shares are fractions of the MUSIC picks in a music type; 'pause.share' is the fraction of all picks that are short silences.",
   "night": [
     20,
     6
   ],
+  "periods": [
+    [
+      "A",
+      20,
+      22
+    ],
+    [
+      "B",
+      22,
+      6
+    ],
+    [
+      "C",
+      6,
+      8
+    ],
+    [
+      "D",
+      8,
+      18
+    ],
+    [
+      "E",
+      18,
+      20
+    ]
+  ],
+  "_periods": "Clock periods for the time-gated copies. Must cover 24 h once. Night (Nyghtfall leads) is 20-06 = A+B.",
+  "pause": {
+    "share": 0.05,
+    "max_seconds": 15,
+    "track": "_MUSExploreSILENT10"
+  },
+  "_pause": "Pauses: wherever a list had silences, they are replaced by vanilla's 10-second silence (_MUSExploreSILENT10, allowed at all hours) at 5% of picks. Longer silences are left out.",
   "shares": {
     "lead": 0.75,
     "vanilla": 0.1,
-    "nyghtfall_minor": 0.05
+    "nyghtfall_minor": 0.05,
+    "vanilla_leftover": 0.02
   },
+  "_vanilla_leftover": "Vanilla tracks LORKHAN doesn't replace form the group 'Vanilla' with a token 2%.",
   "max_entries": 2500,
-  "vanilla_group": "LORKHAN / vanilla",
-  "_vanilla_group": "Vanilla track records. With LORKHAN - Soundtrack Replacer installed, 233 of them play LORKHAN's music (it replaces the audio files, it adds no records).",
+  "vanilla_group": "LORKHAN",
+  "_vanilla_group": "Vanilla track records whose music file LORKHAN - Soundtrack Replacer replaces (listed in lorkhan_files.txt). An equal partner in the default class, 10% elsewhere.",
   "vanilla_peer_classes": [
     "default"
   ],
-  "_vanilla_peer_classes": "In these classes the vanilla/LORKHAN group is an equal partner of Chapter II, Celtic and Still instead of a fixed 10% share.",
+  "_vanilla_peer_classes": "In these classes LORKHAN is an equal partner of Chapter II, Celtic and Still instead of a fixed 10% share.",
+  "replacers": {
+    "LORKHAN": "lorkhan_files.txt"
+  },
   "groups": {
-    "skyrim.esm": "LORKHAN / vanilla",
-    "update.esm": "LORKHAN / vanilla",
-    "dawnguard.esm": "LORKHAN / vanilla",
+    "skyrim.esm": "Vanilla",
+    "update.esm": "Vanilla",
+    "dawnguard.esm": "Vanilla",
     "nyghtfallmm_nonreplacer.esp": "Nyghtfall",
     "chapter ii - soundtrack mod by dreyma music.esp": "Chapter II",
     "celtic_music_in_skyrim_se.esp": "Celtic Music",

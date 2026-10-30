@@ -19,7 +19,8 @@ hour, and compares with the rules (independent of the weighting code's own repor
 """
 import argparse, collections, os, struct, sys
 from esp import read_plugin
-from build_combined import load_order, find, Plugin, tracks, load_excludes, resolve_excludes, FORMID_FUNCS, load_fixes, apply_fixes
+from build_combined import (load_order, find, Plugin, tracks, load_excludes, resolve_excludes, FORMID_FUNCS,
+                            load_fixes, apply_fixes, replacer_groups, silence_seconds)
 import weighting
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -44,6 +45,7 @@ def main():
     musts = {p.key(r.fid): (p, r) for p in plugins.values() for r in p.must}
     muscs = {p.key(r.fid) for p in plugins.values() for r in p.musc}
     rules = weighting.load_rules(a.rules) if a.rules.lower() != 'none' and os.path.exists(a.rules) else None
+    repl = replacer_groups(rules, musts, os.path.dirname(os.path.abspath(a.rules))) if rules else {}
 
     hdr, masters, recs = read_plugin(a.built)
     errs = []
@@ -88,7 +90,7 @@ def main():
             want_ctda.append(bytes(c))
         got = r.all('CTDA')
         if rules:
-            if got[:2] != weighting.gate_ctda(period, rules['night']):
+            if period not in rules['period_names'] or got[:2] != weighting.gate_ctda(period, rules):
                 errs.append(f'{r.edid}: time check missing or wrong')
         rest = []
         for i, c in enumerate(got[2:]):
@@ -139,11 +141,12 @@ def main():
         for p in plugins.values():
             for src in p.musc:
                 if p.key(src.fid) == k:
-                    lost = {t for t in tracks(p, src) if t[1] and t not in covered and t not in excl}
+                    lost = {t for t in tracks(p, src) if t[1] and t not in covered and t not in excl
+                            and not (rules and rules.get('pause') and 'SILENT' in musts[t][1].edid.upper())}
                     if lost:
                         errs.append(f'{r.edid}: {len(lost)} track(s) from {p.name} missing')
         if rules:
-            sharelog.append(check_shares(r.edid, lst, copies, musts, rules))
+            sharelog.append(check_shares(r.edid, lst, copies, musts, rules, repl))
 
     print(f'{os.path.basename(a.built)}: {sum(1 for r in recs if r.type == "MUSC")} music types, '
           f'{len(copies)} day/night copies, {total} track entries, {len(masters)} masters')
@@ -163,7 +166,7 @@ def main():
     sys.exit(1 if errs else 0)
 
 
-def check_shares(edid, lst, copies, musts, rules):
+def check_shares(edid, lst, copies, musts, rules, repl):
     """Recount shares per slot from the built list and compare with weighting.targets()."""
     cls = rules['type_class'].get(edid, 'default')
     mass = [collections.Counter() for _ in range(weighting.SLOTS)]
@@ -175,11 +178,11 @@ def check_shares(edid, lst, copies, musts, rules):
         else:
             src = t; m = weighting.mask(musts[t][1].all('CTDA'))
         silent = 'SILENT' in musts[src][1].edid.upper()
-        g = '_pause' if silent else rules['groups'].get(src[0], src[0])
+        g = '_pause' if silent else repl.get(src, rules['groups'].get(src[0], src[0]))
         for s in range(weighting.SLOTS):
             if m[s]:
                 mass[s][g] += 1
-    gaps = []
+    gaps, pgaps = [], []
     for s in range(weighting.SLOTS):
         z = sum(mass[s].values())
         if not z:
@@ -190,7 +193,12 @@ def check_shares(edid, lst, copies, musts, rules):
             continue
         tgt = weighting.targets(cls, set(music), s in rules['night_slots'], rules)
         gaps.append(sum(abs(music.get(g, 0) / mz - tgt.get(g, 0)) for g in set(music) | set(tgt)) / 2)
-    return edid, (sum(gaps) / len(gaps) if gaps else 0.0)
+        if mass[s].get('_pause') and rules.get('pause'):
+            pgaps.append(abs(mass[s]['_pause'] / z - rules['pause']['share']))
+    g = sum(gaps) / len(gaps) if gaps else 0.0
+    if pgaps:
+        g = max(g, sum(pgaps) / len(pgaps))
+    return edid, g
 
 
 if __name__ == '__main__':
