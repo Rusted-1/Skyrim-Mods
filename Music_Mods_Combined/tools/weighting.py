@@ -79,8 +79,10 @@ def targets(cls, present, night, rules):
     if lead is None and night and rules['classes']['default'].get('night_lead') in present and cls == 'default':
         lead = rules['classes']['default']['night_lead']
     t = {}
-    if 'Vanilla' in present:
-        t['Vanilla'] = sh['vanilla']
+    V = rules.get('vanilla_group', 'Vanilla')
+    vanilla_peer = cls in rules.get('vanilla_peer_classes', [])
+    if V in present and not vanilla_peer:
+        t[V] = sh['vanilla']
     if 'Nyghtfall' in present and lead != 'Nyghtfall':
         t['Nyghtfall'] = sh['nyghtfall_minor']
     if lead:
@@ -92,8 +94,8 @@ def targets(cls, present, night, rules):
             t[g] = rest / len(others)
     elif lead:
         t[lead] += rest
-    elif 'Vanilla' in t:
-        t['Vanilla'] += rest
+    elif V in t:
+        t[V] += rest
     elif t:
         k = next(iter(t)); t[k] += rest
     z = sum(t.values()) or 1
@@ -108,7 +110,7 @@ def weigh(type_edid, entries, info, pause_share, rules):
     # Gate (split into day and night copies) every group whose share must change with the clock:
     # Nyghtfall, vanilla and pauses where Nyghtfall leads at night, plus any group whose number of
     # eligible tracks differs between day and night (e.g. Chapter II's day/night palettes).
-    gated_groups = {'Nyghtfall', 'Vanilla', '_pause'} if cls == 'default' else set()
+    gated_groups = {'Nyghtfall', rules.get('vanilla_group', 'Vanilla'), '_pause'} if cls == 'default' else set()
     ns = rules['night_slots']
     for g in {('_pause' if info[k]['silence'] else info[k]['group']) for k in entries}:
         ks = [k for k in entries if ('_pause' if info[k]['silence'] else info[k]['group']) == g]

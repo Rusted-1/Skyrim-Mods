@@ -17,6 +17,10 @@ Chapter II patches were kept for reference only and aren't part of my load order
 | `MelOfCiv - Chapter II Patch.esp` (for ChII 3.5) | MoC×ChII | yes | Skyrim.esm, Dawnguard.esm, ChII, MoC | 1 | 1 |
 | `Still - Chapter II Patch.esp` (for ChII 3.5) | Still×ChII | yes | Skyrim.esm, Dawnguard.esm, ChII, Still | 8 | 2 |
 
+Also in the set since v0.5.0: **LORKHAN - Soundtrack Replacer** (1.0). It has no music plugin;
+it replaces the audio of 233 vanilla track records under their original file names, and none of
+its files collide with the mods above (see `docs/patch/v5-design.md`).
+
 ## How Skyrim picks music
 A **music type** (`MUSC`) is a situation: exploring the Reach, being in a town, a dungeon, combat,
 a discovery sting. Locations, regions and the game engine choose the music type. Each music type

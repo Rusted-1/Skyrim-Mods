@@ -1,5 +1,5 @@
 {
-  "_about": "Music share rules used by build_combined.py (see docs/patch/v4-design.md). Shares are fractions of the MUSIC picks in a music type; pauses keep their own share.",
+  "_about": "Music share rules used by build_combined.py (see docs/patch/v4-design.md and v5-design.md). Shares are fractions of the MUSIC picks in a music type; pauses keep their own share.",
   "night": [
     20,
     6
@@ -10,10 +10,16 @@
     "nyghtfall_minor": 0.05
   },
   "max_entries": 2500,
+  "vanilla_group": "LORKHAN / vanilla",
+  "_vanilla_group": "Vanilla track records. With LORKHAN - Soundtrack Replacer installed, 233 of them play LORKHAN's music (it replaces the audio files, it adds no records).",
+  "vanilla_peer_classes": [
+    "default"
+  ],
+  "_vanilla_peer_classes": "In these classes the vanilla/LORKHAN group is an equal partner of Chapter II, Celtic and Still instead of a fixed 10% share.",
   "groups": {
-    "skyrim.esm": "Vanilla",
-    "update.esm": "Vanilla",
-    "dawnguard.esm": "Vanilla",
+    "skyrim.esm": "LORKHAN / vanilla",
+    "update.esm": "LORKHAN / vanilla",
+    "dawnguard.esm": "LORKHAN / vanilla",
     "nyghtfallmm_nonreplacer.esp": "Nyghtfall",
     "chapter ii - soundtrack mod by dreyma music.esp": "Chapter II",
     "celtic_music_in_skyrim_se.esp": "Celtic Music",
