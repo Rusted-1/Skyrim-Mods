@@ -52,18 +52,16 @@ Night, when Nyghtfall leads, is still 20:00–06:00 (A+B).
 - List length is now a hard cap of 2,500 entries per music type (the longest is 2,493). The
   plugin is 349 KB.
 
-## Results (`v6-merge-report.md`; hour-by-hour check of the built plugin)
-| Music type, hour | Mix |
+## Results (hour-by-hour check of the built plugin; daily averages in `v6-merge-report.md`)
+| Music type, hour | Mix (all picks, pauses included) |
 |---|---|
-| Reach 10:00 | Celtic 24%, Still 23%, LORKHAN 23%, Chapter II 23%, Nyghtfall 5%, vanilla 2%, pause 5%* |
-| Reach 07:00 (Still has no tracks before 08:00) | Celtic 32%, LORKHAN 31%, Chapter II 31%, Nyghtfall 4%, vanilla 2% |
-| Reach 01:00 | Nyghtfall about 67–70%, Celtic, LORKHAN, Still and Chapter II about 6% each, pause 5% |
-| Dungeons by day | Celtic 32%, LORKHAN 32%, Still 32%, Nyghtfall 5% |
-| Towns | Melodies of Civilization about 70%, LORKHAN 9–10%, pause 5%, Nyghtfall 5%, Celtic and Chapter II 3–8% |
+| Reach 10:00 | Celtic 23%, Still 22%, LORKHAN 22%, Chapter II 22%, pause 5%, Nyghtfall 4%, vanilla 2% |
+| Reach 07:00 (Still has no tracks before 08:00) | Celtic 31%, Chapter II 30%, LORKHAN 28%, pause 5%, Nyghtfall 4%, vanilla 2% |
+| Reach 01:00 | Nyghtfall 68%, Celtic 7%, Still 6%, LORKHAN 6%, Chapter II 6%, pause 6%, vanilla 2% |
+| Dungeons, day | LORKHAN 32%, Still 32%, Celtic 32%, Nyghtfall 5% |
+| Dungeons, night | Nyghtfall 75%, LORKHAN 8%, Still 8%, Celtic 8% |
+| Towns 10:00 | Melodies of Civilization 72%, LORKHAN 9%, Celtic 5%, Nyghtfall 5%, pause 4%, Chapter II 4%, vanilla 2% |
 | Taverns | Around the Fire 85%, LORKHAN 10%, Nyghtfall 5% |
-
-\* The hourly figures in this row were measured before the single-pause-track change. The daily
-averages in `v6-merge-report.md` include the 5% pause.
 
 Averaged over a whole day period, Still reads a few points lower in the wilderness (e.g. 18%
 against Celtic's 26% in the Reach). That's because Still has no tracks from 06:00 to 08:00; hour by
