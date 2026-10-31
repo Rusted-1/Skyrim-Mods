@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="http://qconsulting.ca/fo3/ModConfig5.0.xsd">
+  <moduleName>Forgotten City - Delayed Start</moduleName>
+
+  <installSteps order="Explicit">
+    <installStep name="Forgotten City - Delayed Start">
+      <optionalFileGroups order="Explicit">
+        <group name="Patch" type="SelectAll">
+          <plugins order="Explicit">
+            <plugin name="ForgottenCity_DelayedStart.esp">
+              <description>The courier with Cassia's letter now waits until you are level 25 (The Forgotten City's default is level 5).
+
+Change the level at any time from the console:
+  set FCDS_CourierLevel to 30
+
+Only the courier is delayed. You can still find the Forgotten Ruins on your own at any level.
+
+Needs ForgottenCity.esp (The Forgotten City 1.8). Load this patch after it. Remove the old "Forgotten City - Delayed Start.esp" (Nexus 56958) if you have it installed.
+
+Works alongside The Forgotten City Entrance Extended, Music Bug Fixer and Good Ending Tweaks; none of them edits the record this patch changes.
+
+ESL-flagged, so it uses no plugin slot. Install it before the courier has already been sent (before level 5 on a new character); a save where the letter is already on its way will still get it.</description>
+              <files><folder source="Core" destination="" priority="0"/></files>
+              <typeDescriptor><type name="Required"/></typeDescriptor>
+            </plugin>
+          </plugins>
+        </group>
+      </optionalFileGroups>
+    </installStep>
+  </installSteps>
+</config>
