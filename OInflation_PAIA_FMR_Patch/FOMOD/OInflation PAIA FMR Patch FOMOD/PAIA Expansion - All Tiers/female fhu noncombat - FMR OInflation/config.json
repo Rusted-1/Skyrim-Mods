@@ -1,0 +1,74 @@
+{
+    "name": "female fhu noncombat - FMR OInflation",
+    "description": "female fhu noncombat (Fertility Mode Reloaded / OInflation)",
+    "priority": 91147700,
+    "overrideAnimationsFolder": "female fhu noncombat",
+    "conditions": [
+        {
+            "condition": "IsFemale",
+            "requiredVersion": "1.0.0.0"
+        },
+        {
+            "condition": "IsChild",
+            "requiredVersion": "1.0.0.0",
+            "negated": true
+        },
+        {
+            "condition": "HasKeyword",
+            "requiredVersion": "1.0.0.0",
+            "Keyword": {
+                "editorID": "ActorNPC"
+            }
+        },
+        {
+            "condition": "OR",
+            "requiredVersion": "1.0.0.0",
+            "Conditions": [
+                {
+                    "condition": "AND",
+                    "requiredVersion": "1.0.0.0",
+                    "Conditions": [
+                        {
+                            "condition": "FactionRank",
+                            "requiredVersion": "1.0.0.0",
+                            "Faction": {
+                                "pluginName": "Fertility Mode.esm",
+                                "formID": "02666B"
+                            },
+                            "Comparison": ">=",
+                            "Numeric value": {
+                                "value": 40.0
+                            }
+                        },
+                        {
+                            "condition": "FactionRank",
+                            "requiredVersion": "1.0.0.0",
+                            "Faction": {
+                                "pluginName": "Fertility Mode.esm",
+                                "formID": "02666B"
+                            },
+                            "Comparison": "<=",
+                            "Numeric value": {
+                                "value": 100.0
+                            }
+                        }
+                    ]
+                },
+                {
+                    "condition": "HasMagicEffect",
+                    "requiredVersion": "1.0.0.0",
+                    "Magic effect": {
+                        "pluginName": "OInflation.esp",
+                        "formID": "2FA1"
+                    },
+                    "Active effects only": false
+                }
+            ]
+        },
+        {
+            "condition": "IsInCombat",
+            "requiredVersion": "1.0.0.0",
+            "negated": true
+        }
+    ]
+}

@@ -1,0 +1,87 @@
+{
+    "name": "female fhu Idle more than 80 Player - FMR OInflation",
+    "description": "Idle Anim (Fertility Mode Reloaded / OInflation)",
+    "priority": 91147696,
+    "overrideAnimationsFolder": "female fhu Idle more than 80 Player",
+    "conditions": [
+        {
+            "condition": "IsFemale",
+            "requiredVersion": "1.0.0.0"
+        },
+        {
+            "condition": "IsChild",
+            "requiredVersion": "1.0.0.0",
+            "negated": true
+        },
+        {
+            "condition": "HasKeyword",
+            "requiredVersion": "1.0.0.0",
+            "Keyword": {
+                "editorID": "PlayerKeyword"
+            }
+        },
+        {
+            "condition": "Random",
+            "requiredVersion": "2.3.0.0",
+            "State": {
+                "scope": "Local",
+                "shouldResetOnLoopOrEcho": false
+            },
+            "Minimum random value": {
+                "value": 0.0
+            },
+            "Maximum random value": {
+                "value": 1.0
+            },
+            "Comparison": "<=",
+            "Numeric value": {
+                "value": 0.3571000099182129
+            }
+        },
+        {
+            "condition": "OR",
+            "requiredVersion": "1.0.0.0",
+            "Conditions": [
+                {
+                    "condition": "AND",
+                    "requiredVersion": "1.0.0.0",
+                    "Conditions": [
+                        {
+                            "condition": "FactionRank",
+                            "requiredVersion": "1.0.0.0",
+                            "Faction": {
+                                "pluginName": "Fertility Mode.esm",
+                                "formID": "02666B"
+                            },
+                            "Comparison": ">=",
+                            "Numeric value": {
+                                "value": 80.0
+                            }
+                        },
+                        {
+                            "condition": "FactionRank",
+                            "requiredVersion": "1.0.0.0",
+                            "Faction": {
+                                "pluginName": "Fertility Mode.esm",
+                                "formID": "02666B"
+                            },
+                            "Comparison": "<=",
+                            "Numeric value": {
+                                "value": 100.0
+                            }
+                        }
+                    ]
+                },
+                {
+                    "condition": "HasMagicEffect",
+                    "requiredVersion": "1.0.0.0",
+                    "Magic effect": {
+                        "pluginName": "OInflation.esp",
+                        "formID": "2FA1"
+                    },
+                    "Active effects only": false
+                }
+            ]
+        }
+    ]
+}

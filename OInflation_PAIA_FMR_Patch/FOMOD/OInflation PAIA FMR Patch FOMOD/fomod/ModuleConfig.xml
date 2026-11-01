@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="http://qconsulting.ca/fo3/ModConfig5.0.xsd">
+  <moduleName>OInflation and Fertility Mode Reloaded for P.A.I.A</moduleName>
+
+  <installSteps order="Explicit">
+    <installStep name="P.A.I.A">
+      <optionalFileGroups order="Explicit">
+        <group name="P.A.I.A idle conditions" type="SelectAny">
+          <plugins order="Explicit">
+            <plugin name="OInflation">
+              <description>Plays the P.A.I.A pregnancy idle while OInflation has inflated a belly (OInflation's "Inflation Effect" is on the actor).
+
+Needs P.A.I.A 4.5 installed with the Open Animation Replacer option, and OInflation.esp.
+
+If you installed the older "P.A.I.A OInflation Patch for OAR", remove it: it overwrites P.A.I.A's OCum Inflated condition and this option replaces it.</description>
+              <files><folder source="PAIA\OInflation" destination="Meshes\Actors\Character\Animations\OpenAnimationReplacer\PAIA\OInflation" priority="0"/></files>
+              <typeDescriptor>
+                <dependencyType>
+                  <defaultType name="Optional"/>
+                  <patterns>
+                    <pattern>
+                      <dependencies operator="And"><fileDependency file="OInflation.esp" state="Active"/></dependencies>
+                      <type name="Recommended"/>
+                    </pattern>
+                  </patterns>
+                </dependencyType>
+              </typeDescriptor>
+            </plugin>
+            <plugin name="Fertility Mode Reloaded">
+              <description>Plays the P.A.I.A pregnancy idle in the 2nd and 3rd trimester of a Fertility Mode Reloaded pregnancy (pregnancy progress 33-100, or FMR's 2nd/3rd trimester spell).
+
+Needs P.A.I.A 4.5 installed with the Open Animation Replacer option, and Fertility Mode.esm from Fertility Mode Reloaded. P.A.I.A's own "Fertility Mode" option needs the old Fertility Mode 3 Fixes and Updates, so FMR users should pick this instead.</description>
+              <files><folder source="PAIA\Fertility Mode Reloaded" destination="Meshes\Actors\Character\Animations\OpenAnimationReplacer\PAIA\Fertility Mode Reloaded" priority="0"/></files>
+              <typeDescriptor>
+                <dependencyType>
+                  <defaultType name="Optional"/>
+                  <patterns>
+                    <pattern>
+                      <dependencies operator="And"><fileDependency file="Fertility Mode.esm" state="Active"/></dependencies>
+                      <type name="Recommended"/>
+                    </pattern>
+                  </patterns>
+                </dependencyType>
+              </typeDescriptor>
+            </plugin>
+          </plugins>
+        </group>
+      </optionalFileGroups>
+    </installStep>
+
+    <installStep name="P.A.I.A Expansion">
+      <optionalFileGroups order="Explicit">
+        <group name="P.A.I.A Expansion conditions" type="SelectExactlyOne">
+          <plugins order="Explicit">
+            <plugin name="FMR + OInflation (recommended)">
+              <description>Adds a Fertility Mode Reloaded / OInflation copy of every P.A.I.A Expansion animation set: walk/run, non-combat, one-hand + shield, and the random pregnancy idles, each for NPCs and the player.
+
+Fertility Mode Reloaded uses the same pregnancy-progress tiers P.A.I.A Expansion uses (10 / 40 / 50 / 60 / 80).
+
+OInflation only says "inflated" or "not inflated", and its default maximum belly is 60%. In this option an OInflation belly plays the walk/run/shield sets and the "more than 10" and "more than 40" idles, but not the heavy "more than 60" and "more than 80" idles.
+
+Needs P.A.I.A Expansion OAR 1.2.</description>
+              <files><folder source="PAIA Expansion - Recommended" destination="Meshes\Actors\Character\Animations\OpenAnimationReplacer\PAIA Expansion" priority="0"/></files>
+              <typeDescriptor><type name="Recommended"/></typeDescriptor>
+            </plugin>
+            <plugin name="FMR + OInflation (all tiers)">
+              <description>Same as the recommended option, but an OInflation belly also counts for the heavy "more than 60" and "more than 80" idles. Pick this if you raised OInflation's maximum belly size in its MCM.
+
+Needs P.A.I.A Expansion OAR 1.2.</description>
+              <files><folder source="PAIA Expansion - All Tiers" destination="Meshes\Actors\Character\Animations\OpenAnimationReplacer\PAIA Expansion" priority="0"/></files>
+              <typeDescriptor><type name="Optional"/></typeDescriptor>
+            </plugin>
+            <plugin name="None">
+              <description>Don't install anything for P.A.I.A Expansion. Pick this if you don't use it.</description>
+              <typeDescriptor><type name="Optional"/></typeDescriptor>
+            </plugin>
+          </plugins>
+        </group>
+      </optionalFileGroups>
+    </installStep>
+  </installSteps>
+</config>

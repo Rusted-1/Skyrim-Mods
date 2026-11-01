@@ -1,0 +1,77 @@
+{
+    "name": "Fertility Mode Reloaded",
+    "description": "Plays the P.A.I.A idle in the 2nd and 3rd trimester of a Fertility Mode Reloaded pregnancy.",
+    "priority": 91044068,
+    "overrideAnimationsFolder": "PAIA Idle",
+    "conditions": [
+        {
+            "condition": "HasKeyword",
+            "requiredVersion": "1.0.0.0",
+            "disabled": true,
+            "Keyword": {
+                "editorID": "PlayerKeyword"
+            }
+        },
+        {
+            "condition": "IsFemale",
+            "requiredVersion": "1.0.0.0"
+        },
+        {
+            "condition": "IsChild",
+            "requiredVersion": "1.0.0.0",
+            "negated": true
+        },
+        {
+            "condition": "OR",
+            "requiredVersion": "1.0.0.0",
+            "Conditions": [
+                {
+                    "condition": "HasSpell",
+                    "requiredVersion": "1.0.0.0",
+                    "Spell": {
+                        "pluginName": "Fertility Mode.esm",
+                        "formID": "1B818"
+                    }
+                },
+                {
+                    "condition": "HasSpell",
+                    "requiredVersion": "1.0.0.0",
+                    "Spell": {
+                        "pluginName": "Fertility Mode.esm",
+                        "formID": "1B81A"
+                    }
+                },
+                {
+                    "condition": "AND",
+                    "requiredVersion": "1.0.0.0",
+                    "Conditions": [
+                        {
+                            "condition": "FactionRank",
+                            "requiredVersion": "1.0.0.0",
+                            "Faction": {
+                                "pluginName": "Fertility Mode.esm",
+                                "formID": "02666B"
+                            },
+                            "Comparison": ">=",
+                            "Numeric value": {
+                                "value": 33.0
+                            }
+                        },
+                        {
+                            "condition": "FactionRank",
+                            "requiredVersion": "1.0.0.0",
+                            "Faction": {
+                                "pluginName": "Fertility Mode.esm",
+                                "formID": "02666B"
+                            },
+                            "Comparison": "<=",
+                            "Numeric value": {
+                                "value": 100.0
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,34 @@
+{
+    "name": "OInflation",
+    "description": "Plays the P.A.I.A idle while OInflation has inflated the belly.",
+    "priority": 91044067,
+    "overrideAnimationsFolder": "PAIA Idle",
+    "conditions": [
+        {
+            "condition": "HasKeyword",
+            "requiredVersion": "1.0.0.0",
+            "disabled": true,
+            "Keyword": {
+                "editorID": "PlayerKeyword"
+            }
+        },
+        {
+            "condition": "IsFemale",
+            "requiredVersion": "1.0.0.0"
+        },
+        {
+            "condition": "IsChild",
+            "requiredVersion": "1.0.0.0",
+            "negated": true
+        },
+        {
+            "condition": "HasMagicEffect",
+            "requiredVersion": "1.0.0.0",
+            "Magic effect": {
+                "pluginName": "OInflation.esp",
+                "formID": "2FA1"
+            },
+            "Active effects only": false
+        }
+    ]
+}
