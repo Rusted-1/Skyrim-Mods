@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="http://qconsulting.ca/fo3/ModConfig5.0.xsd">
+  <moduleName>More Stress Gone</moduleName>
+
+  <installSteps order="Explicit">
+    <installStep name="Patches">
+      <optionalFileGroups order="Explicit">
+        <group name="Stress and Fear patches" type="SelectAny">
+          <plugins order="Explicit">
+            <plugin name="Glad You're Here">
+              <description>Hugging someone with Glad You're Here lowers your Stress and Fear stress:
+
+  Your children: -25
+  Your spouse or lover: -18
+  Good friends (confidant or ally): -10
+  Followers, strangers and pets: -5
+
+You get a short "The hug eases your stress." notification when it works. Stress never goes below 0.
+
+Needs ImGladYoureHere.esp (Glad You're Here 3.6) and Stress and Fear.esp (Stress and Fear 2.07), plus SKSE. ESL-flagged, so it uses no plugin slot. Load order doesn't matter. Safe to add to an existing save.</description>
+              <files><folder source="GladYoureHere" destination="" priority="0"/></files>
+              <typeDescriptor><type name="Recommended"/></typeDescriptor>
+            </plugin>
+          </plugins>
+        </group>
+      </optionalFileGroups>
+    </installStep>
+  </installSteps>
+</config>
