@@ -69,14 +69,15 @@ public static class OStimPatch
         // Event OnOStimOrgasm(String asEventName, String asSceneID, Float afIndex, Form akSender)
         var h = new Asm().Param("String", "asEventName").Param("String", "asSceneID").Param("Float", "afIndex").Param("Form", "akSender")
             .Local("Actor", "::temp0").Local("Actor[]", "::temp1").Local("Bool", "::temp2").Local("Bool", "::temp3")
-            .Local("Int", "::temp4").Local("String", "::temp5").Local("None", "::NoneVar")
+            .Local("Int", "::temp4").Local("String", "::temp5").Local("Form", "::temp6").Local("None", "::NoneVar")
             .Local("Actor", "player").Local("Actor[]", "actors").Local("Int", "i").Local("Int", "playerPos")
             .Local("String", "pos").Local("Int", "amount").Local("Int", "found").Local("Int", "partnerPos")
             .Local("Actor", "partner").Local("Int", "rank");
         // Actor player = Game.GetPlayer() / If akSender != player : Return
         h.Static("Game", "GetPlayer", "::temp0");
         h.Op(ASSIGN, Id("player"), Id("::temp0"));
-        h.Op(CMP_EQ, Id("::temp2"), Id("akSender"), Id("player"));
+        h.Op(CAST, Id("::temp6"), Id("player"));   // Form == Actor: the compiler casts to a common type first
+        h.Op(CMP_EQ, Id("::temp2"), Id("akSender"), Id("::temp6"));
         h.Op(NOT, Id("::temp2"), Id("::temp2"));
         h.JmpF("::temp2", "isPlayer");
         h.Op(RETURN, V.None);
@@ -136,7 +137,8 @@ public static class OStimPatch
         //     Actor partner = OThread.GetActor(0, partnerPos) / If partner != None
         h.Static("OThread", "GetActor", "::temp0", V.I(0), Id("partnerPos"));
         h.Op(ASSIGN, Id("partner"), Id("::temp0"));
-        h.Op(CMP_EQ, Id("::temp2"), Id("partner"), V.None);
+        h.Op(CAST, Id("::temp0"), V.None);
+        h.Op(CMP_EQ, Id("::temp2"), Id("partner"), Id("::temp0"));
         h.Op(NOT, Id("::temp2"), Id("::temp2"));
         h.JmpF("::temp2", "bonusDone");
         //       Int rank = partner.GetRelationshipRank(player)
@@ -158,17 +160,19 @@ public static class OStimPatch
 
         // Event OnFMRConception(Form akMother, Form akFather, Int aiTrackingIndex)
         var c = new Asm().Param("Form", "akMother").Param("Form", "akFather").Param("Int", "aiTrackingIndex")
-            .Local("Actor", "::temp0").Local("Bool", "::temp1").Local("ActorBase", "::temp2").Local("None", "::NoneVar")
-            .Local("Actor", "player");
+            .Local("Actor", "::temp0").Local("Bool", "::temp1").Local("ActorBase", "::temp2").Local("Form", "::temp3")
+            .Local("None", "::NoneVar").Local("Actor", "player");
         c.Static("Game", "GetPlayer", "::temp0");
         c.Op(ASSIGN, Id("player"), Id("::temp0"));
-        // If akMother == player || akFather == player || akFather == player.GetActorBase()
-        c.Op(CMP_EQ, Id("::temp1"), Id("akMother"), Id("player"));
+        // If akMother == player || akFather == player || akFather == player.GetActorBase()   (each cast to Form first)
+        c.Op(CAST, Id("::temp3"), Id("player"));
+        c.Op(CMP_EQ, Id("::temp1"), Id("akMother"), Id("::temp3"));
         c.JmpT("::temp1", "check");
-        c.Op(CMP_EQ, Id("::temp1"), Id("akFather"), Id("player"));
+        c.Op(CMP_EQ, Id("::temp1"), Id("akFather"), Id("::temp3"));
         c.JmpT("::temp1", "check");
         c.Call("GetActorBase", "player", "::temp2");
-        c.Op(CMP_EQ, Id("::temp1"), Id("akFather"), Id("::temp2"));
+        c.Op(CAST, Id("::temp3"), Id("::temp2"));
+        c.Op(CMP_EQ, Id("::temp1"), Id("akFather"), Id("::temp3"));
         c.Label("check");
         c.JmpF("::temp1", "end");
         c.Call("LowerStress", "self", "::NoneVar", V.I(10), V.S("You feel a deep sense of contentment."));

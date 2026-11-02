@@ -89,7 +89,7 @@ It's safe to add to an existing save: each quest starts by itself the next time 
 | `FOMOD/More Stress Gone FOMOD/` | The installer, unzipped: `fomod/` config, `GladYoureHere/` and `OStim/` (plugin, compiled script, script source each) |
 | `tools/MsgTool/` | C# (.NET 8) tool: builds the plugins and assembles the compiled scripts, checks them against the original mods, reads/disassembles `.pex` and `.esp` files, zips the installer |
 | `docs/analysis/` | How each original mod works where the patches hook in |
-| `docs/patch/` | Design, checks and in-game test plan per version: `v1-design.md` (Glad You're Here), `v2-ostim.md` (OStim) |
+| `docs/patch/` | Design, checks and in-game test plan per version: `v1-design.md` (Glad You're Here), `v2-ostim.md` (OStim), `v3-review-fixes.md` (1.1.1 fixes) |
 
 ## Rebuilding
 Needs the .NET 8 SDK. There's no Creation Kit or Papyrus compiler on my PC, so the tool writes
@@ -101,14 +101,15 @@ line by line, so if you change one, change the other to match. From the `More_St
 dotnet run --project tools/MsgTool -c Release -- build "FOMOD/More Stress Gone FOMOD"
 dotnet run --project tools/MsgTool -c Release -- verify-gyh "FOMOD/More Stress Gone FOMOD" "<Stress and Fear.esp>" "<ImGladYoureHere.esp>" "<GYH Scripts/WW42HugFollowerScript.pex>"
 dotnet run --project tools/MsgTool -c Release -- verify-ostim "FOMOD/More Stress Gone FOMOD" "<Stress and Fear.esp>" "<unzipped OStim folder>" "<FMR scripts folder>"
-dotnet run --project tools/MsgTool -c Release -- zip "FOMOD/More Stress Gone FOMOD" "More Stress Gone 1.1.0.zip"
+dotnet run --project tools/MsgTool -c Release -- zip "FOMOD/More Stress Gone FOMOD" "More Stress Gone 1.1.1.zip"
 ```
 
-`ostim-table "<unzipped OStim folder>"` prints which OStim actions count for how much.
+`ostim-table "<unzipped OStim folder>"` prints which OStim actions count for how much. `check "<file.pex or folder>"` runs the
+assembler's sanity checks (declared names, jump targets, matching types in comparisons) on any compiled script.
 
 ## Status
-1.1.0. Built and verified at the file level:
-* Glad You're Here: all 17 checks in `verify-gyh` pass. The plugin and script are byte-identical to 1.0.0.
+1.1.1. Built and verified at the file level:
+* Glad You're Here: all 17 checks in `verify-gyh` pass.
 * OStim: all 35 checks in `verify-ostim` pass against OStim Standalone 7.5c and Fertility Mode
   Reloaded 1.0.7.
 

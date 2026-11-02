@@ -79,13 +79,14 @@ public static class Build
     public static V Id(string s) => V.Id(s);
 
     // Emits: stressTotal = max(0, stressTotal - <amount>), then a notification if it dropped.
-    // <amount> is an Int variable. Used by OStim's LowerStress(); the GYH script keeps its v1.0.0 inline version.
+    // <amount> is an Int variable. Used by OStim's LowerStress(); the GYH script has its own inline version.
     public static void EmitLowerStress(Asm h, string amountVar, V message)
     {
         h.Static("Game", "GetFormFromFile", "::temp1", V.I(0x00000801), V.S("Stress and Fear.esp"));
         h.Op(CAST, Id("::temp2"), Id("::temp1"));
         h.Op(ASSIGN, Id("stressTotal"), Id("::temp2"));
-        h.Op(CMP_EQ, Id("::temp3"), Id("stressTotal"), V.None);
+        h.Op(CAST, Id("::temp2"), V.None);
+        h.Op(CMP_EQ, Id("::temp3"), Id("stressTotal"), Id("::temp2"));
         h.JmpF("::temp3", "ls_found");
         h.Op(RETURN, V.None);
         h.Label("ls_found");
@@ -140,10 +141,18 @@ public static class Build
                     for (int i = 0; i < fn.Code.Count; i++)
                     {
                         var ins = fn.Code[i];
-                        int skip = ins.Op switch { 0x17 => 1, 0x19 => 2, _ => 0 }; // method / class+function names
+                        int skip = ins.Op switch { 0x17 or 0x18 or 0x1C or 0x1D => 1, 0x19 => 2, _ => 0 }; // method/property, class+function names
                         foreach (var a in ins.Args.Skip(skip).Concat(ins.VarArgs))
                             if (a.T == VT.Ident && !known.Contains((string)a.Val!))
                                 throw new Exception($"{name}@{i}: undeclared identifier {a.Val}");
+                        // Comparisons: the compiler always casts both sides to one type first (even None),
+                        // so both operands must have the same declared type.
+                        if (ins.Op is >= CMP_EQ and <= CMP_GE)
+                        {
+                            var types = ins.Args.Skip(1).Select(a => TypeOf(a, fn, o)).ToList();
+                            if (types.Contains(null) || !string.Equals(types[0], types[1], StringComparison.OrdinalIgnoreCase))
+                                throw new Exception($"{name}@{i}: comparison of {ins.Args[1]} ({types[0] ?? "None"}) with {ins.Args[2]} ({types[1] ?? "None"}) needs a cast");
+                        }
                         if (ins.Op is 0x14 or 0x15 or 0x16)
                         {
                             int target = i + (int)ins.Args[^1].Val!;
@@ -152,6 +161,19 @@ public static class Build
                     }
                 }
     }
+
+    // Declared type of an operand; null for a bare None literal.
+    static string? TypeOf(V a, PexFunction fn, PexObject o) => a.T switch
+    {
+        VT.None => null,
+        VT.Int => "Int",
+        VT.Float => "Float",
+        VT.Bool => "Bool",
+        VT.Str => "String",
+        _ => (string)a.Val! == "self" ? o.Name
+            : fn.Params.Concat(fn.Locals).Concat(o.Variables.Select(v => (v.Name, v.Type)))
+                .First(p => string.Equals(p.Name, (string)a.Val!, StringComparison.OrdinalIgnoreCase)).Type
+    };
 
     // ---------- verification helpers ----------
     static int fails;

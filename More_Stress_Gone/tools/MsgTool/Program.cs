@@ -6,6 +6,13 @@ switch (args[0])
     case "dis":   // dis <file.pex>
         Console.Write(PexFile.Read(File.ReadAllBytes(args[1])).Disassemble());
         break;
+    case "check": // check <file.pex | folder>: run the assembler's sanity checks on compiled scripts
+        foreach (var f in Directory.Exists(args[1]) ? Directory.GetFiles(args[1], "*.pex") : new[] { args[1] })
+        {
+            try { Build.Check(PexFile.Read(File.ReadAllBytes(f))); Console.WriteLine("OK " + f); }
+            catch (Exception ex) { Console.WriteLine("REJECTED " + Path.GetFileName(f) + ": " + ex.Message); }
+        }
+        break;
     case "roundtrip": // roundtrip <dir>: parse every pex, re-write it, re-parse and compare disassembly
         foreach (var f in Directory.GetFiles(args[1], "*.pex"))
         {

@@ -9,7 +9,7 @@ public static class GYHPatch
     public const string ScriptName = "MoreStressGone_GYHScript";
 
     // Mirrors GladYoureHere/Source/Scripts/MoreStressGone_GYHScript.psc line by line.
-    // Unchanged since v1.0.0, so the compiled script stays byte-identical.
+    // 1.1.1: None comparisons now cast None to the object's type first, matching the real compiler.
     public static PexFile Script()
     {
         var obj = new PexObject { Name = ScriptName, Parent = "ReferenceAlias" };
@@ -38,10 +38,12 @@ public static class GYHPatch
         h.Static("Game", "GetFormFromFile", "::temp1", V.I(0x00000801), V.S("Stress and Fear.esp"));
         h.Op(CAST, Id("::temp2"), Id("::temp1"));
         h.Op(ASSIGN, Id("stressTotal"), Id("::temp2"));
-        // If target == None || stressTotal == None : Return
-        h.Op(CMP_EQ, Id("::temp3"), Id("target"), V.None);
+        // If target == None || stressTotal == None : Return   (None is cast to the object's type, as the compiler does)
+        h.Op(CAST, Id("::temp0"), V.None);
+        h.Op(CMP_EQ, Id("::temp3"), Id("target"), Id("::temp0"));
         h.JmpT("::temp3", "or1");
-        h.Op(CMP_EQ, Id("::temp4"), Id("stressTotal"), V.None);
+        h.Op(CAST, Id("::temp2"), V.None);
+        h.Op(CMP_EQ, Id("::temp4"), Id("stressTotal"), Id("::temp2"));
         h.Op(ASSIGN, Id("::temp3"), Id("::temp4"));
         h.Label("or1");
         h.JmpF("::temp3", "notMissing");
