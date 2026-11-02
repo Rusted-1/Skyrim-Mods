@@ -31,8 +31,14 @@ You only need the parts you use. Skip the OInflation option if you don't have OI
 **Remove these if you have them**, because this patch replaces them:
 * "P.A.I.A OInflation Patch for OAR" (Nexus 103761 optional file). It overwrites P.A.I.A's
   *OCum Inflated* condition so that it checks OInflation instead.
-* "PAIA FMR" / "PAIA Expansion FMR" (Nexus 169023). They do the FMR half of this patch. Leaving
-  them in won't break anything, but both sets of conditions would then compete.
+* "PAIA FMR" / "PAIA Expansion FMR" (Nexus 169023). They do the FMR half of this patch. Their
+  archives have no `Meshes\…\OpenAnimationReplacer\` folders, so a plain Vortex install puts them
+  in `Data\PAIA\` and `Data\PAIA Expansion\`, where OAR never reads them. Installed correctly,
+  "PAIA FMR" would clash with this patch's `PAIA\Fertility Mode Reloaded\config.json`.
+
+**OInflation with OCum Ascended:** only actors in a scene with the player get inflated. NPC-only
+scenes use a different OCum event that OInflation doesn't listen to, so those NPCs won't get the
+OInflation animations. FMR pregnancies work for everyone.
 
 ## Install (Vortex)
 Install `OInflation PAIA FMR Patch 1.0.0.zip`, or zip the contents of
@@ -68,7 +74,7 @@ Details and the full tier table are in `docs/patch/v1-design.md`.
 | Folder | Contents |
 |---|---|
 | `FOMOD/OInflation PAIA FMR Patch FOMOD/` | The installer, unzipped: `fomod/` config, `PAIA/` (2 submods), `PAIA Expansion - Recommended/` and `PAIA Expansion - All Tiers/` (16 submods each) |
-| `tools/` | `Build-Patch.ps1` (writes every `config.json`), `Verify-Patch.ps1` (file-level checks), `Get-PluginForms.ps1` (lists a plugin's EditorID/FormID pairs) |
+| `tools/` | `Build-Patch.ps1` (writes every `config.json`), `Verify-Patch.ps1` (file-level checks), `Get-PluginForms.ps1` (lists a plugin's EditorID/FormID pairs), `Show-PexCalls.ps1` (minimal .pex disassembler, used to read FMR's faction ranks) |
 | `docs/analysis/` | `01-how-the-mods-signal.md`: what P.A.I.A, the Expansion, OInflation and FMR expose |
 | `docs/patch/` | `v1-design.md`: tiers, priorities, choices, in-game test plan |
 
@@ -89,5 +95,7 @@ hand-written, and `Build-Patch.ps1` doesn't touch it.
 v1.0.0. Built and verified at file level: `Verify-Patch.ps1` passes all 348 checks. These cover the
 form IDs against the real plugins, the animation folders against the installed mods, upstream
 conditions carried over unchanged, the tiers, the OInflation inclusion per option, unique
-priorities, the installer paths, and that only .json/.xml files ship. **Not yet tested in game.**
+priorities, the installer paths, and that only .json/.xml files ship. A second review confirmed FMR's
+rank values from its compiled scripts and checked that OAR 3.2.0 supports every condition used
+(see `docs/patch/v1-design.md`). **Not yet tested in game.**
 The test steps are at the end of `docs/patch/v1-design.md`.

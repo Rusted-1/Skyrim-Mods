@@ -49,13 +49,28 @@ files. Every "Idle more than N" folder (NPC and Player) holds `female\mt_idle.hk
   **"has OInflationEffect" = "belly is inflated after a scene"**.
 * There's no rank or global for the belly size. It only lives in the NiOverride morph, which OAR
   can't read. Default max size (MCM) is 60%.
+* OInflation listens for OCum's `ocum_applied_cum` event (Form, Form, Float, String, String).
+  **OCum Ascended** 4.1.1 still sends it with those arguments (`OCumMaleScript.SendCumAppliedEvents`),
+  but only for the player's scene (thread 0). NPC-only scenes send `ocum_applied_cum_npc_scene`
+  instead, which OInflation doesn't listen to. So with OCum Ascended, only actors in a scene with
+  the player get inflated.
 
 ## Fertility Mode Reloaded 1.0.7
 * Keeps the original plugin name, `Fertility Mode.esm`.
-* FACT `02666B` **ImmersiveEffectsFaction**. `_JSW_BB_HandlerQuestAliasScript`, `_JSW_BB_Utility`
-  and `_JSW_BB_ImpregnateEffect` all call `SetFactionRank` on it, together with strings like
-  `PREGNANCY SET`, `rank=` and `FMR_LastSentRank`. The rank is the pregnancy progress, 0–100.
-  Both "PAIA FMR" example patches (Nexus 169023) use it the same way, with a rank of 1–100
-  meaning pregnant.
+* FACT `02666B` **ImmersiveEffectsFaction**. Every `SetFactionRank` call on it, read from the
+  compiled scripts with `tools/Show-PexCalls.ps1`:
+
+  | Rank | Set by | Meaning |
+  |---|---|---|
+  | 0 | `_JSW_BB_Utility.ClearActorEffects`, end of recovery, miscarriage | not pregnant |
+  | 1 | `_JSW_BB_ImpregnateEffect.OnEffectStart` | just conceived |
+  | **1–100** | `UpdatePregnancy`: `1 + int(pregnantDay / duration × 99)`, capped at 100 | **pregnancy progress** |
+  | 101 | `GiveBirth` | just gave birth |
+  | 101–115 | `UpdateStatusSingle`: `101 + int(recovery progress × 14)` | recovering after birth |
+  | 117–119 | `UpdateStatusSingle` | menstrual cycle phase |
+  | 120 | `OnFertilityModeLabor` | in labor |
+
+  So "pregnant" is exactly rank 1–100. Any check also needs `≤ 100`, otherwise recovery, cycle
+  and labor ranks pass a `≥ tier` test.
 * SPEL `01B816` / `01B818` / `01B81A`: trimester 1/2/3 spells (same IDs as the original Fertility
   Mode, still referenced by `_JSW_BB_Utility`).

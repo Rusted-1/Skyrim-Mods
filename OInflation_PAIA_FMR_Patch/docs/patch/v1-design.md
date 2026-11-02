@@ -86,5 +86,15 @@ The `≤ 100` cap copies the PAIA FMR example patches, so a rank above 100 never
 
 ## Known limits
 * OInflation has no size signal, so the Expansion tiers can't follow the OInflation belly size.
-* The FMR rank meaning (0–100 progress) is based on FMR's script strings and the existing PAIA
-  FMR patches, not on decompiled source. The in-game test step 3 confirms it.
+* With OCum Ascended, OInflation only inflates actors in a scene with the player. NPC-only scenes
+  use a different event that OInflation doesn't listen to (see the analysis doc). The patch
+  can't change that.
+
+## Review (2026-11-02)
+* The FMR rank meaning is now confirmed from FMR's compiled scripts: 1–100 = pregnancy progress,
+  0 = not pregnant, and 101–120 = after birth / cycle / labor (full table in
+  `docs/analysis/01-how-the-mods-signal.md`). The `≤ 100` cap is required, not just a safeguard.
+* Open Animation Replacer 3.2.0 has every condition the patch uses (AND, OR, FactionRank,
+  HasMagicEffect, HasSpell, IsEquippedType, Random, IsInCombat).
+* The release zip matches the verified files byte for byte (36 files). There's no BOM, and all
+  JSON parses. The longest installed path is 138 characters, about 200 with the game folder.
