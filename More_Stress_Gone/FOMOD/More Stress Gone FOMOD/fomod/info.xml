@@ -2,7 +2,7 @@
 <fomod>
   <Name>More Stress Gone</Name>
   <Author>Rusted-1</Author>
-  <Version MachineVersion="1.0.0">1.0.0</Version>
-  <Description>Patches that let more things from other mods lower your stress in Stress and Fear. 1.0.0 adds Glad You're Here: hugging someone lowers your stress by 5 (followers, strangers, pets), 10 (good friends), 18 (spouse or lover) or 25 (your children).</Description>
+  <Version MachineVersion="1.1.0">1.1.0</Version>
+  <Description>Patches that let more things from other mods lower your stress in Stress and Fear. Glad You're Here: hugging someone lowers your stress by 5 (followers, strangers, pets), 10 (good friends), 18 (spouse or lover) or 25 (your children). OStim (1.1.0): climaxing in a scene lowers it by 5 to 20 depending on the act, with partner and Fertility Mode Reloaded conception bonuses.</Description>
   <Groups><element>Patches</element><element>Immersion</element></Groups>
 </fomod>

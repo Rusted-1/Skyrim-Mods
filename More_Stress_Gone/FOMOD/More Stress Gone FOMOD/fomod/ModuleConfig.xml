@@ -22,6 +22,25 @@ Needs ImGladYoureHere.esp (Glad You're Here 3.6) and Stress and Fear.esp (Stress
               <files><folder source="GladYoureHere" destination="" priority="0"/></files>
               <typeDescriptor><type name="Recommended"/></typeDescriptor>
             </plugin>
+            <plugin name="OStim">
+              <description>Each time your character climaxes in an OStim scene, your Stress and Fear stress goes down. The amount depends on the act in the scene where you finish, plus a bonus for who your partner is:
+
+  Vaginal intercourse: -20
+  Anal intercourse: -15
+  Oral: -10
+  Manual and everything else: -5
+
+  Spouse or lover: a further -10
+  Good friend (confidant or ally): a further -5
+
+With Fertility Mode Reloaded, a conception involving your character (either parent) lowers stress by another 10, with a neutral message so FMR's pregnancy reveal isn't spoiled.
+
+Counts every climax. Adults only: nothing happens if a child is in the scene. Stress never goes below 0.
+
+Needs OStim.esp (OStim Standalone 7.5c) and Stress and Fear.esp (Stress and Fear 2.07), plus SKSE. Fertility Mode Reloaded 1.0.7 is optional. ESL-flagged, so it uses no plugin slot. Load order doesn't matter. Safe to add to an existing save.</description>
+              <files><folder source="OStim" destination="" priority="0"/></files>
+              <typeDescriptor><type name="Optional"/></typeDescriptor>
+            </plugin>
           </plugins>
         </group>
       </optionalFileGroups>
