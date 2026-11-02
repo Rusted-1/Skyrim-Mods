@@ -13,7 +13,9 @@
 
 Needs P.A.I.A 4.5 installed with the Open Animation Replacer option, and OInflation.esp.
 
-If you installed the older "P.A.I.A OInflation Patch for OAR", remove it: it overwrites P.A.I.A's OCum Inflated condition and this option replaces it.</description>
+If you installed the older "P.A.I.A OInflation Patch for OAR", remove it: it overwrites P.A.I.A's OCum Inflated condition and this option replaces it.
+
+P.A.I.A's own "OCum Inflated" option checks an effect that OCum Ascended doesn't have, so it never triggers. You can set P.A.I.A's "Inflation Mod" to None.</description>
               <files><folder source="PAIA\OInflation" destination="Meshes\Actors\Character\Animations\OpenAnimationReplacer\PAIA\OInflation" priority="0"/></files>
               <typeDescriptor>
                 <dependencyType>
@@ -30,7 +32,9 @@ If you installed the older "P.A.I.A OInflation Patch for OAR", remove it: it ove
             <plugin name="Fertility Mode Reloaded">
               <description>Plays the P.A.I.A pregnancy idle in the 2nd and 3rd trimester of a Fertility Mode Reloaded pregnancy (pregnancy progress 33-100, or FMR's 2nd/3rd trimester spell).
 
-Needs P.A.I.A 4.5 installed with the Open Animation Replacer option, and Fertility Mode.esm from Fertility Mode Reloaded. P.A.I.A's own "Fertility Mode" option needs the old Fertility Mode 3 Fixes and Updates, so FMR users should pick this instead.</description>
+Needs P.A.I.A 4.5 installed with the Open Animation Replacer option, and Fertility Mode.esm from Fertility Mode Reloaded.
+
+IMPORTANT: in P.A.I.A's own installer, set "Pregnancy Mod" to None. P.A.I.A's "Fertility Mode" option checks "Fertility Mode 3 Fixes and Updates.esp" inside a NOT. Without that plugin the check is always true, so every woman, NPCs included, plays the pregnancy idle all the time.</description>
               <files><folder source="PAIA\Fertility Mode Reloaded" destination="Meshes\Actors\Character\Animations\OpenAnimationReplacer\PAIA\Fertility Mode Reloaded" priority="0"/></files>
               <typeDescriptor>
                 <dependencyType>

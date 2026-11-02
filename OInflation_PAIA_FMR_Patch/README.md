@@ -28,6 +28,14 @@ Expansion, OInflation, Fertility Mode Reloaded or any of their files.
 You only need the parts you use. Skip the OInflation option if you don't have OInflation, or pick
 "None" on the Expansion page if you don't have P.A.I.A Expansion.
 
+**In P.A.I.A's own installer, set "Pregnancy Mod" to None** (and "Inflation Mod" to None if you
+use OCum Ascended). P.A.I.A's *Fertility Mode* option contains
+`NOT FactionRank("Fertility Mode 3 Fixes and Updates.esp" 862) < 33`. Without that plugin, OAR
+can't resolve the faction, the check is false, and the NOT makes it **always true**, so every
+woman, NPCs included, plays the pregnancy idle all the time. This patch's *Fertility Mode Reloaded*
+option replaces it. P.A.I.A's *OCum Inflated* option checks `OCum.esp` effect `F18`, which OCum
+Ascended doesn't have, so it never triggers. This patch's *OInflation* option replaces it.
+
 **Remove these if you have them**, because this patch replaces them:
 * "P.A.I.A OInflation Patch for OAR" (Nexus 103761 optional file). It overwrites P.A.I.A's
   *OCum Inflated* condition so that it checks OInflation instead.
@@ -41,7 +49,7 @@ scenes use a different OCum event that OInflation doesn't listen to, so those NP
 OInflation animations. FMR pregnancies work for everyone.
 
 ## Install (Vortex)
-Install `OInflation PAIA FMR Patch 1.0.0.zip`, or zip the contents of
+Install `OInflation PAIA FMR Patch 1.0.1.zip`, or zip the contents of
 `FOMOD/OInflation PAIA FMR Patch FOMOD/` yourself so that `fomod/` sits at the top of the zip.
 Install it **after** P.A.I.A and P.A.I.A Expansion. Nothing in it conflicts with their files, so
 Vortex shouldn't ask you for a rule. There's no plugin and no load order.
@@ -76,7 +84,7 @@ Details and the full tier table are in `docs/patch/v1-design.md`.
 | `FOMOD/OInflation PAIA FMR Patch FOMOD/` | The installer, unzipped: `fomod/` config, `PAIA/` (2 submods), `PAIA Expansion - Recommended/` and `PAIA Expansion - All Tiers/` (16 submods each) |
 | `tools/` | `Build-Patch.ps1` (writes every `config.json`), `Verify-Patch.ps1` (file-level checks), `Get-PluginForms.ps1` (lists a plugin's EditorID/FormID pairs), `Show-PexCalls.ps1` (minimal .pex disassembler, used to read FMR's faction ranks) |
 | `docs/analysis/` | `01-how-the-mods-signal.md`: what P.A.I.A, the Expansion, OInflation and FMR expose |
-| `docs/patch/` | `v1-design.md`: tiers, priorities, choices, in-game test plan |
+| `docs/patch/` | `v1-design.md`: tiers, priorities, choices, in-game test plan. `v1.0.1-changes.md`: the P.A.I.A "Fertility Mode" always-true condition |
 
 ## Rebuilding
 Windows PowerShell 5.1, with no extra modules. Extract P.A.I.A Expansion OAR 1.2 somewhere, then from
@@ -92,7 +100,7 @@ The script paths are all parameters, with nothing absolute baked in. The install
 hand-written, and `Build-Patch.ps1` doesn't touch it.
 
 ## Status
-v1.0.0. Built and verified at file level: `Verify-Patch.ps1` passes all 348 checks. These cover the
+v1.0.1. Built and verified at file level: `Verify-Patch.ps1` passes all 348 checks. These cover the
 form IDs against the real plugins, the animation folders against the installed mods, upstream
 conditions carried over unchanged, the tiers, the OInflation inclusion per option, unique
 priorities, the installer paths, and that only .json/.xml files ship. A second review confirmed FMR's
